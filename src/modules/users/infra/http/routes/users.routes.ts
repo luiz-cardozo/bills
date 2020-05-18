@@ -1,21 +1,35 @@
 import { Router } from 'express';
-import CreateUserService from '@modules/users/services/CreateUserService';
+import { celebrate, Segments, Joi } from 'celebrate';
+// import multer from 'multer';
 
-const userRouter = Router();
+// import uploadConfig from '@config/upload';
 
-userRouter.post('/', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+// import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import UsersController from '../controllers/UsersController';
+// import UserAvatarController from '../controllers/UserAvatarController';
 
-    const createUser = new CreateUserService();
+const usersRouter = Router();
+// const upload = multer(uploadConfig);
+const usersController = new UsersController();
+// const userAvatarController = new UserAvatarController();
 
-    const user = await createUser.execute({ name, email, password });
-    delete user.password;
+usersRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    },
+  }),
+  usersController.create,
+);
 
-    return res.send(user);
-  } catch (err) {
-    return res.status(400).json({ error: err.message });
-  }
-});
+// usersRouter.patch(
+//   '/avatar',
+//   ensureAuthenticated,
+//   upload.single('avatar'),
+//   userAvatarController.update,
+// );
 
-export default userRouter;
+export default usersRouter;

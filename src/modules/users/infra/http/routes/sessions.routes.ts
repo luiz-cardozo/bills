@@ -1,19 +1,19 @@
 import { Router } from 'express';
-import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
+import { Segments, Joi, celebrate } from 'celebrate';
+import SessionsController from '../controllers/SessionsController';
 
 const sessionsRouter = Router();
+const sessionsController = new SessionsController();
 
-sessionsRouter.post('/', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const authenticateUser = new AuthenticateUserService();
-    const { user, token } = await authenticateUser.execute({ email, password });
-    delete user.password;
-
-    return res.json({ user, token });
-  } catch (err) {
-    return res.status(401).json({ error: 'invalid e-mail or password' });
-  }
-});
+sessionsRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    },
+  }),
+  sessionsController.create,
+);
 
 export default sessionsRouter;
