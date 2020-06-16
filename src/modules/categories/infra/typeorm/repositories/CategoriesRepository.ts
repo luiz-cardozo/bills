@@ -1,11 +1,7 @@
-import { uuid } from 'uuidv4';
 import { Repository, getRepository } from 'typeorm';
+
 import Category from '@modules/categories/infra/typeorm/entities/Category';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
-
-interface IRequest {
-  name: string;
-}
 
 class CateogriesRepository implements ICategoriesRepository {
   private ormRepository: Repository<Category>;
@@ -29,6 +25,11 @@ class CateogriesRepository implements ICategoriesRepository {
   public async findAll(): Promise<Category[]> {
     const categories = this.ormRepository.find();
     return categories;
+  }
+
+  public async findById(category_id: string): Promise<Category | undefined> {
+    const category = this.ormRepository.findOne(category_id);
+    return category;
   }
 }
 

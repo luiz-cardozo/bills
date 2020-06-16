@@ -18,9 +18,8 @@ describe('Categories', () => {
     expect(category.name).toBe('Food');
   });
 
-  it('should not be able to create category with a name already in use', async () => {
+  it('should not be able to create a duplicate category', async () => {
     await createCategories.execute({ name: 'Food' });
-
     await expect(
       createCategories.execute({ name: 'Food' }),
     ).rejects.toBeInstanceOf(AppError);

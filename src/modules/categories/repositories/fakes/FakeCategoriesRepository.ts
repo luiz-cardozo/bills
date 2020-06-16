@@ -30,6 +30,13 @@ class FakeCategoriesRepository implements ICategoriesRepository {
   public async findAll(): Promise<Category[]> {
     return this.categories;
   }
+
+  public async findById(category_id: string): Promise<Category | undefined> {
+    const checkCategoryExists = this.categories.find(
+      category => category.id === category_id,
+    );
+    return checkCategoryExists;
+  }
 }
 
 export default FakeCategoriesRepository;

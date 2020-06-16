@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
+import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
 
 @Entity('users')
 class User {
@@ -24,6 +26,9 @@ class User {
 
   @Column()
   avatar: string;
+
+  @OneToMany(() => Transaction, transaction => transaction.user)
+  transactions: Transaction[];
 
   @CreateDateColumn()
   created_at: Date;

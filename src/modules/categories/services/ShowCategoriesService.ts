@@ -1,13 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
-// import AppError from '@shared/errors/AppError';
-import AppError from '@shared/errors/AppError';
 import ICategoriesRepository from '../repositories/ICategoriesRepository';
 import Category from '../infra/typeorm/entities/Category';
-
-interface IRequest {
-  name: string;
-}
 
 @injectable()
 class ShowCategoriesService {

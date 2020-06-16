@@ -12,6 +12,14 @@ import UserTokensRepository from '@modules/users/infra/typeorm/repositories/User
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
 import CategoriesRepository from '@modules/categories/infra/typeorm/repositories/CategoriesRepository';
 
+import ITransactionsRepository from '@modules/transactions/repositories/ITransactionsRepository';
+import TransactionsRepository from '@modules/transactions/infra/typeorm/repositories/TransactionsRepository';
+
+container.registerSingleton<ITransactionsRepository>(
+  'TransactionsRepository',
+  TransactionsRepository,
+);
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,

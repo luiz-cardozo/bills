@@ -6,7 +6,7 @@ let fakeCategoriesRepository: FakeCategoriesRepository;
 let showCategories: ShowCategoryService;
 let createCategories: CreateCategoriesService;
 
-describe('Users', () => {
+describe('ShowCategories', () => {
   beforeEach(() => {
     fakeCategoriesRepository = new FakeCategoriesRepository();
     createCategories = new CreateCategoriesService(fakeCategoriesRepository);
