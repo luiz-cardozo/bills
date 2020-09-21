@@ -4,9 +4,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
 } from 'typeorm';
-import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
 
 @Entity('categories')
 class Category {
@@ -16,10 +14,10 @@ class Category {
   @Column()
   name: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updated_at: Date;
 }
 

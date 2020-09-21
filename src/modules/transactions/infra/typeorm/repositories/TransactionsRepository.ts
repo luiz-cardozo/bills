@@ -1,4 +1,4 @@
-import { Repository, getRepository, Between, Connection } from 'typeorm';
+import { Repository, getRepository, Between } from 'typeorm';
 import { startOfMonth, endOfMonth } from 'date-fns';
 
 import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
@@ -19,6 +19,9 @@ class TransactionsRepository implements ITransactionsRepository {
   }
 
   public async getApportionedTransactions(searchDate: Date): Promise<any> {
+    const monthStart = startOfMonth(searchDate);
+    const monthEnd = endOfMonth(searchDate);
+
     const user = await this.userRepository
       .createQueryBuilder('user')
       .select(['user.name as name', 'user.id as id'])
@@ -27,6 +30,10 @@ class TransactionsRepository implements ITransactionsRepository {
       .andWhere('transaction.type = :type', { type: 'outcome' })
       .andWhere('transaction.apportionment = :apportionment', {
         apportionment: 'shared',
+      })
+      .andWhere('transaction.date BETWEEN :start AND :end', {
+        start: monthStart,
+        end: monthEnd,
       })
       .groupBy('user.name, user.id')
       .getRawMany();
@@ -85,14 +92,14 @@ class TransactionsRepository implements ITransactionsRepository {
     const monthEnd = endOfMonth(searchDate);
 
     const transactions = await this.ormRepository.find({
+      select: ['id', 'title', 'type', 'value', 'apportionment', 'date'],
       where: {
         date: Between(monthStart, monthEnd),
       },
       order: {
         value: 'DESC',
       },
-
-      relations: ['user'],
+      relations: ['user', 'category'],
     });
 
     return transactions;

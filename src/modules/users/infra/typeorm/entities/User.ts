@@ -30,10 +30,10 @@ class User {
   @OneToMany(() => Transaction, transaction => transaction.user)
   transactions: Transaction[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updated_at: Date;
 
   @Expose({ name: 'avatar_url' })

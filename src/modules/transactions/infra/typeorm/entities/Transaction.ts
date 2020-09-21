@@ -51,10 +51,10 @@ class Transaction {
   @Column('timestamp with time zone')
   date: Date;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updated_at: Date;
 }
 
